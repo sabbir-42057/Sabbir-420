@@ -5,8 +5,8 @@ if (!global.temp.welcomeEvent)
 module.exports = {
 	config: {
 		name: "welcome",
-		version: "1.7",
-		author: "NTKhang",
+		version: "1.8",
+		author: "NTKhang ",
 		category: "events"
 	},
 
@@ -19,7 +19,7 @@ module.exports = {
 			welcomeMessage: "Cảm ơn bạn đã mời tôi vào nhóm!\nPrefix bot: %1\nĐể xem danh sách lệnh hãy nhập: %1help",
 			multiple1: "bạn",
 			multiple2: "các bạn",
-			defaultWelcomeMessage: "Xin chào {userName}.\nChào mừng bạn đến với {boxName}.\nChúc bạn có buổi {session} vui vẻ!"
+			defaultWelcomeMessage: "✨🌸 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 🌸✨\n\n┏━━━━━━━━━━━━━┓\n   💫 𝐇𝐞𝐲 {userName} 💫\n┗━━━━━━━━━━━━━┛\n\n🌷 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 {multiple} 𝐭𝐨 {boxName} ✨\n𝐇𝐚𝐯𝐞 𝐚 𝐧𝐢𝐜𝐞 {session} 💕"
 		},
 		en: {
 			session1: "morning",
@@ -29,7 +29,7 @@ module.exports = {
 			welcomeMessage: "Thank you for inviting me to the group!\nBot prefix: %1\nTo view the list of commands, please enter: %1help",
 			multiple1: "you",
 			multiple2: "you guys",
-			defaultWelcomeMessage: `Hello {userName}.\nWelcome {multiple} to the chat group: {boxName}\nHave a nice {session} 😊`
+			defaultWelcomeMessage: "✨🌸 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 🌸✨\n\n┏━━━━━━━━━━━━━┓\n   💫 𝐇𝐞𝐲 {userName} 💫\n┗━━━━━━━━━━━━━┛\n\n🌷 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 {multiple} 𝐭𝐨 {boxName} ✨\n𝐇𝐚𝐯𝐞 𝐚 𝐧𝐢𝐜𝐞 {session} 💕"
 		}
 	},
 
@@ -41,12 +41,14 @@ module.exports = {
 				const { nickNameBot } = global.GoatBot.config;
 				const prefix = global.utils.getPrefix(threadID);
 				const dataAddedParticipants = event.logMessageData.addedParticipants;
+				
 				// if new member is bot
 				if (dataAddedParticipants.some((item) => item.userFbId == api.getCurrentUserID())) {
 					if (nickNameBot)
 						api.changeNickname(nickNameBot, threadID, api.getCurrentUserID());
 					return message.send(getLang("welcomeMessage", prefix));
 				}
+
 				// if new member:
 				if (!global.temp.welcomeEvent[threadID])
 					global.temp.welcomeEvent[threadID] = {
@@ -56,7 +58,6 @@ module.exports = {
 
 				// push new member to array
 				global.temp.welcomeEvent[threadID].dataAddedParticipants.push(...dataAddedParticipants);
-				// if timeout is set, clear it
 				clearTimeout(global.temp.welcomeEvent[threadID].joinTimeout);
 
 				// set new timeout
@@ -64,6 +65,7 @@ module.exports = {
 					const threadData = await threadsData.get(threadID);
 					if (threadData.settings.sendWelcomeMessage == false)
 						return;
+
 					const dataAddedParticipants = global.temp.welcomeEvent[threadID].dataAddedParticipants;
 					const dataBanned = threadData.data.banned_ban || [];
 					const threadName = threadData.threadName;
@@ -71,29 +73,22 @@ module.exports = {
 						mentions = [];
 					let multiple = false;
 
-					if (dataAddedParticipants.length > 1)
-						multiple = true;
+					if (dataAddedParticipants.length > 1) multiple = true;
 
 					for (const user of dataAddedParticipants) {
 						if (dataBanned.some((item) => item.id == user.userFbId))
 							continue;
 						userName.push(user.fullName);
-						mentions.push({
-							tag: user.fullName,
-							id: user.userFbId
-						});
+						mentions.push({ tag: user.fullName, id: user.userFbId });
 					}
-					// {userName}:   name of new member
-					// {multiple}:
-					// {boxName}:    name of group
-					// {threadName}: name of group
-					// {session}:    session of day
+
 					if (userName.length == 0) return;
-					let { welcomeMessage = getLang("defaultWelcomeMessage") } =
-						threadData.data;
+					let { welcomeMessage = getLang("defaultWelcomeMessage") } = threadData.data;
+
 					const form = {
 						mentions: welcomeMessage.match(/\{userNameTag\}/g) ? mentions : null
 					};
+
 					welcomeMessage = welcomeMessage
 						.replace(/\{userName\}|\{userNameTag\}/g, userName.join(", "))
 						.replace(/\{boxName\}|\{threadName\}/g, threadName)
@@ -124,6 +119,7 @@ module.exports = {
 							.filter(({ status }) => status == "fulfilled")
 							.map(({ value }) => value);
 					}
+
 					message.send(form);
 					delete global.temp.welcomeEvent[threadID];
 				}, 1500);
