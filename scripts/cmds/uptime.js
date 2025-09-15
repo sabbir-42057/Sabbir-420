@@ -1,41 +1,83 @@
+const os = require("os");
+const moment = require("moment-timezone");
+
 module.exports = {
   config: {
     name: "uptime",
-    aliases: ["upt", "up"],
-    version: "1.7",
-    author: "MahMUD",
+    aliases: ["up"],
+    version: "1.3",
+    author: "SaiF",
     role: 0,
-    category: "general",
-    guide: {
-      en: "Use {p}uptime to display bot's uptime and user stats."
-    }
+    shortDescription: "",
+    longDescription: "",
+    category: "system"
   },
 
   onStart: async function ({ api, event, usersData, threadsData }) {
     try {
-      const allUsers = await usersData.getAll();
-      const allThreads = await threadsData.getAll();
-      const uptime = process.uptime();
+      // Bot uptime
+      let uptimeSeconds = process.uptime();
+      let days = Math.floor(uptimeSeconds / (3600 * 24));
+      let hours = Math.floor((uptimeSeconds % (3600 * 24)) / 3600);
+      let minutes = Math.floor((uptimeSeconds % 3600) / 60);
+      let seconds = Math.floor(uptimeSeconds % 60);
+      let botUptime = `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-      const days = Math.floor(uptime / (60 * 60 * 24));
-      const hours = Math.floor((uptime % (60 * 60 * 24)) / 3600);
-      const minutes = Math.floor((uptime % 3600) / 60);
+      // System uptime
+      let sysSeconds = os.uptime();
+      let sysDays = Math.floor(sysSeconds / (3600 * 24));
+      let sysHours = Math.floor((sysSeconds % (3600 * 24)) / 3600);
+      let sysMinutes = Math.floor((sysSeconds % 3600) / 60);
+      let sysUptime = `${sysDays}d ${sysHours}h ${sysMinutes}m`;
 
-      const uptimeString = `${days}D ${hours}H ${minutes}M`;
+      // BD time
+      let bdTime = moment().tz("Asia/Dhaka");
+      let timeNow = bdTime.format("hh:mm A");
+      let dayNow = bdTime.format("dddd");
+      let dateNow = bdTime.format("DD MMMM YYYY");
 
-      const msg = 
-`╭─🎀 𝙔𝙊𝙐𝙍 𝘽𝙊𝙏 𝙐𝙋𝙏𝙄𝙈𝙀
-│
-├🐤 𝗨𝗽𝘁𝗶𝗺𝗲: ${uptimeString}  
-├👥 𝗧𝗼𝘁𝗮𝗹 𝗨𝘀𝗲𝗿𝘀: ${allUsers.length.toLocaleString()}  
-├💬 𝗧𝗼𝘁𝗮𝗹 𝗚𝗿𝗼𝘂𝗽𝘀: ${allThreads.length.toLocaleString()}  
-│
-╰───────────────◉`;
+      // System info
+      let totalMem = Math.floor(os.totalmem() / 1024 / 1024 / 1024);
+      let freeMem = Math.floor(os.freemem() / 1024 / 1024 / 1024);
+      let cpuModel = os.cpus()?.[0]?.model || "Unknown CPU";
+      let platform = os.platform();
 
-      api.sendMessage(msg, event.threadID, event.messageID);
-    } catch (error) {
-      console.error(error);
-      api.sendMessage("An error occurred while retrieving uptime or user data.", event.threadID, event.messageID);
+      // Bot stats
+      let totalUsers = (usersData && usersData.getAll) ? (await usersData.getAll()).length : "N/A";
+      let totalGroups = (threadsData && threadsData.getAll) ? (await threadsData.getAll()).length : "N/A";
+
+      // Final message design (exactly previous box style)
+      let msg =
+`
+>𝗧𝗶𝗺𝗲
+╭─────────◊
+├‣ ${timeNow}
+├‣ ${dayNow}
+├‣ ${dateNow}
+╰────────────◊
+
+>𝗨𝗽𝘁𝗶𝗺𝗲 
+╭─────────◊
+├‣ Bot: ${botUptime}
+├‣ System: ${sysUptime}
+├‣ CPU: ${cpuModel}
+╰────────────◊
+
+>𝗦𝘁𝗮𝘁𝘀
+╭─────────◊
+├‣ Users: ${totalUsers}
+├‣ Groups: ${totalGroups}
+├‣ Free RAM: ${freeMem} GB
+├‣ Total RAM: ${totalMem} GB
+├‣ OS: ${platform}
+╰────────────◊
+
+𝐀𝐤'𝐚 𝐙'𝐚 >🎀`;
+
+      api.sendMessage({ body: msg }, event.threadID, event.messageID);
+
+    } catch (e) {
+      api.sendMessage("❌ Error while fetching uptime info.\n" + e.message, event.threadID, event.messageID);
     }
   }
 };
