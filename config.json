@@ -28,7 +28,7 @@
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
   "nickNameBot": "𝗠𝗲𝗹𝗶𝘀𝘀𝗮 𓍯",
-  "prefix": ".",
+  "prefix": "!",
   "database": {
     "type": "mongodb",
     "uriMongodb": "mongodb+srv://mdnirob11229:VyOD8j3UM9hRkzcl@cluster0.fsk0b.mongodb.net/SAIF-BOLOD?retryWrites=true&w=majority&appName=Cluster0",
