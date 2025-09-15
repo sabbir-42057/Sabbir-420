@@ -7,7 +7,7 @@ const axios = require("axios");
 
 module.exports.config = {
   name: "jan",
-  aliases: ["jann","জান", "janu", "hinata", "bby", "baby"],
+  aliases: ["jann","জান", "janu", "melissa", "bby", "baby"],
   version: "1.7",
   author: "MahMUD",
   countDown: 0,
@@ -75,7 +75,7 @@ module.exports.onStart = async ({ api, event, args, usersData }) => {
     }
 
     if (args[0] === "edit") {
-      const allowedUserID = "61556006709662";
+      const allowedUserID = "61579613335244";
       if (uid !== allowedUserID) {
       return api.sendMessage("❌ Unauthorized!", event.threadID, event.messageID);
       }
