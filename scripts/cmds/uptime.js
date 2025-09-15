@@ -72,7 +72,7 @@ module.exports = {
 ├‣ OS: ${platform}
 ╰────────────◊
 
-𝐀𝐤'𝐚 𝐙'𝐚 >🎀`;
+>🎀\n𝗔𝗸𝗮 𝗭'𝗮`;
 
       api.sendMessage({ body: msg }, event.threadID, event.messageID);
 
