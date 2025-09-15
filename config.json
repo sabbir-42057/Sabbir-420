@@ -17,14 +17,17 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "100037951718438"
+    "61579613335244",
+    "61579237688880",
+    "100071429830541",
+    "100014097943658"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "Hinata",
+  "nickNameBot": "𝗠𝗲𝗹𝗶𝘀𝘀𝗮 𓍯",
   "prefix": ".",
   "database": {
     "type": "sqlite",
@@ -132,7 +135,7 @@
     "updatePresence": true,
     "listenTyping": true,
     "logLevel": "error",
-    "selfListen": true,
+    "selfListen": false,
     "selfListenEvent": true,
     "autoMarkDelivery": true,
     "autoReconnect": true,
