@@ -1,33 +1,36 @@
 const fs = require('fs');
 
 module.exports = {
-	config: {
-		name: "file",
-		version: "1.7",
-		author: "MahMUD,
-		countDown: 5,
-		role: 0,
-		category: "admin",
-		guide: "{pn} file name."
-	},
+  config: {
+    name: "file",
+    aliases: "",
+    version: "1.0",
+    author: "Mahir Tahsan",
+    countDown: 5,
+    role: 0,
+    shortDescription: "Send bot script",
+    longDescription: "Send bot specified file ",
+    category: "owner",
+    guide: "{pn} file name. Ex: .{pn} filename"
+  },
 
-	onStart: async function ({ message, args, api, event }) {
-		const permission = ["100037951718438","61556006709662","100051067476600", "100065343379315"];
-		if (!permission.includes(event.senderID)) {
-			return api.sendMessage("❌ | 𝐒𝐨𝐫𝐫𝐲 𝐛𝐚𝐛𝐲, 𝐨𝐧𝐥𝐲 𝐌𝐚𝐡𝐌𝐔𝐃 𝐮𝐬𝐞 𝐭𝐡𝐢𝐬 𝐜𝐨𝐦𝐦𝐚𝐧𝐝", event.threadID, event.messageID);
-		}
+  onStart: async function ({ message, args, api, event }) {
+    const permission = ["100071429830541", "61579613335244", "61579237688880"];
+    if (!permission.includes(event.senderID)) {
+      return api.sendMessage("🙂🖕", event.threadID, event.messageID);
+    }
 
-		const fileName = args[0];
-		if (!fileName) {
-			return api.sendMessage("Please provide a file name.", event.threadID, event.messageID);
-		}
+    const fileName = args[0];
+    if (!fileName) {
+      return api.sendMessage("Please provide a file name.", event.threadID, event.messageID);
+    }
 
-		const filePath = __dirname + `/${fileName}.js`;
-		if (!fs.existsSync(filePath)) {
-			return api.sendMessage(`File not found: ${fileName}.js`, event.threadID, event.messageID);
-		}
+    const filePath = __dirname + `/${fileName}.js`;
+    if (!fs.existsSync(filePath)) {
+      return api.sendMessage(`File not found: ${fileName}.js`, event.threadID, event.messageID);
+    }
 
-		const fileContent = fs.readFileSync(filePath, 'utf8');
-		api.sendMessage({ body: fileContent }, event.threadID);
-	}
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    api.sendMessage({ body: fileContent }, event.threadID);
+  }
 };

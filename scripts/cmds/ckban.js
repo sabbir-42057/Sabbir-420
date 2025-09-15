@@ -1,11 +1,11 @@
 module.exports = {
   config: {
     name: 'ckban',
-    version: '1.7',
+    version: '1.0',
     author: 'MahMUD',
-    countDown: 10,
+    countDown: 15,
     role: 0,
-    category: 'general',
+    category: 'box chat',
     guide: {
       en: '{pn}: Check if the bot is media banned.'
     }

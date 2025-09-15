@@ -41,7 +41,7 @@ module.exports = {
       const hadis = res.data;
 
       message.reply(
-        `${hadis.text}\n\n- ${hadis.source} 🖤`
+        `${hadis.text}\n\n- ${hadis.source}`
       );
     } catch (err) {
       message.reply("🥹error, contact MahMUD");
