@@ -3,8 +3,8 @@ const slotMemory = {}; // in-memory storage
 module.exports = {
   config: {
     name: "slot",
-    version: "1.1",
-    author: "null",
+    version: "1.3",
+    author: "Saif",
     countDown: 10,
     shortDescription: { en: "slot game 🙂" },
     longDescription: { en: "" },
@@ -13,22 +13,21 @@ module.exports = {
 
   langs: {
     en: {
-      invalid_amount: "𝗽𝗹𝗲𝗮𝘀𝗲 𝗶𝗻𝘁𝗲𝗿 𝘃𝗮𝗹𝗶𝗱 𝗮𝗺𝗼𝘂𝗻𝘁 😿💅",
-      not_enough_money: "𝗽𝗹𝗲𝗮𝘀𝗲 𝗰𝗵𝗲𝗰𝗸 𝘆𝗼𝘂𝗿 𝗯𝗮𝗹𝗮𝗻𝗰𝗲🤡",
-      too_much_bet: "𝗯𝗮𝗯𝘆 𝗺𝗮𝘅 𝗯𝗲𝘁 𝗶𝘀 𝟭𝟬𝗠 😿",
-      cooldown: "𝗕𝗮𝗯𝘆 𝘆𝗼𝘂 𝗵𝗮𝘃𝗲 𝗿𝗲𝗮𝗰𝗵𝗲𝗱 𝟮𝟬 𝗽𝗹𝗮𝘆𝘀. 𝗧𝗿𝘆 𝗮𝗴𝗮𝗶𝗻 𝗮𝗳𝘁𝗲𝗿 %1 ⏳",
-      win_message: "•𝗯𝗮𝗯𝘆 𝘆𝗼𝘂 𝘄𝗼𝗻  $%1",
-      lose_message: "•𝗯𝗮𝗯𝘆 𝘆𝗼𝘂 𝗹𝗼𝘀𝘁 $%1",
-      jackpot_message: "»𝘆𝗼𝘂 𝘄𝗼𝗻 𝗝𝗮𝗰𝗸𝗽𝗼𝘁 $%1 𝘄𝗶𝘁𝗵 𝘁𝗵𝗿𝗲𝗲 %2",
+      invalid_amount: "• 𝐏𝐥𝐞𝐚𝐬𝐞 𝐄𝐧𝐭𝐞𝐫 𝐕𝐚𝐥𝐢𝐝 𝐀𝐦𝐨𝐮𝐧𝐭 😿💅",
+      not_enough_money: "• 𝐏𝐥𝐞𝐚𝐬𝐞 𝐂𝐡𝐞𝐜𝐤 𝐘𝐨𝐮𝐫 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 🤡",
+      too_much_bet: "• 𝐁𝐚𝐛𝐲, 𝐌𝐚𝐱 𝐁𝐞𝐭 𝐈𝐬 𝟑𝟎𝐌 😿",
+      cooldown: "• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐚𝐯𝐞 𝐑𝐞𝐚𝐜𝐡𝐞𝐝 𝟐𝟎 𝐏𝐥𝐚𝐲𝐬. 𝐓𝐫𝐲 𝐀𝐠𝐚𝐢𝐧 𝐀𝐟𝐭𝐞𝐫 %1 ⏳",
     },
   },
 
   onStart: async function ({ args, message, event, usersData, getLang }) {
     const { senderID } = event;
-    const amount = parseInt(args[0]);
+
+    // shorthand parser
+    const amount = parseShorthand(args[0]);
     const userData = await usersData.get(senderID);
 
-    const maxBet = 10_000_000;
+    const maxBet = 30_000_000; // 30M
     const maxPlays = 20;
     const cooldown = 10 * 60 * 60 * 1000; // 10 hours
     const now = Date.now();
@@ -82,10 +81,25 @@ module.exports = {
 
     userSlot.count++;
 
-    const messageText = formatResult(results, winnings, getLang);
+    const messageText = formatResult(results, winnings);
     return message.reply(messageText);
   }
 };
+
+// parse shorthand like 1K, 2M, 3B
+function parseShorthand(input) {
+  if (!input) return NaN;
+  const str = input.toUpperCase();
+  let multiplier = 1;
+
+  if (str.endsWith("K")) multiplier = 1e3;
+  else if (str.endsWith("M")) multiplier = 1e6;
+  else if (str.endsWith("B")) multiplier = 1e9;
+  else if (str.endsWith("T")) multiplier = 1e12;
+
+  const num = parseFloat(str.replace(/[KMBT]/, ""));
+  return num * multiplier;
+}
 
 function calculateWinnings([a, b, c], bet) {
   if (a === b && b === c) return bet * 5;
@@ -93,22 +107,27 @@ function calculateWinnings([a, b, c], bet) {
   return -bet;
 }
 
-function formatResult([a, b, c], winnings, getLang) {
-  const slotDisplay = `🪶\n•𝗴𝗮𝗺𝗲 𝗿𝗲𝘀𝘂𝗹𝘁 [ ${a} | ${b} | ${c} ]`;
+function formatResult([a, b, c], winnings) {
+  const slotDisplay = `• 𝐆𝐚𝐦𝐞 𝐑𝐞𝐬𝐮𝐥𝐭𝐬: [ ${a} | ${b} | ${c} ]`;
   const formattedWinnings = formatMoney(Math.abs(winnings));
+
+  let resultText = "";
   if (a === b && b === c) {
-    return `${getLang("jackpot_message", formattedWinnings, a)}\n${slotDisplay}`;
+    resultText = `• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐢𝐭 𝐉𝐚𝐜𝐤𝐩𝐨𝐭 🎉\n• 𝐖𝐨𝐧: ${formattedWinnings}$`;
+  } else if (winnings > 0) {
+    resultText = `• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐖𝐨𝐧 ${formattedWinnings}$`;
+  } else {
+    resultText = `• 𝐎𝐨𝐩𝐬, 𝐘𝐨𝐮 𝐋𝐨𝐬𝐭 ${formattedWinnings}$`;
   }
-  return `${winnings > 0
-    ? getLang("win_message", formattedWinnings)
-    : getLang("lose_message", formattedWinnings)}\n${slotDisplay}`;
+
+  return `>🎀\n${resultText}\n${slotDisplay}`;
 }
 
 function formatMoney(amount) {
-  if (amount >= 1e12) return (amount / 1e12).toFixed(2) + "𝗧";
-  if (amount >= 1e9) return (amount / 1e9).toFixed(2) + "𝗕";
-  if (amount >= 1e6) return (amount / 1e6).toFixed(2) + "𝗠";
-  if (amount >= 1e3) return (amount / 1e3).toFixed(2) + "𝗞";
+  if (amount >= 1e12) return (amount / 1e12).toFixed(2) + "𝐓";
+  if (amount >= 1e9) return (amount / 1e9).toFixed(2) + "𝐁";
+  if (amount >= 1e6) return (amount / 1e6).toFixed(2) + "𝐌";
+  if (amount >= 1e3) return (amount / 1e3).toFixed(2) + "𝐊";
   return amount.toString();
 }
 
@@ -116,5 +135,5 @@ function formatTime(ms) {
   const hours = Math.floor(ms / (1000 * 60 * 60));
   const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
   const seconds = Math.floor((ms % (1000 * 60)) / 1000);
-  return `${hours}h ${minutes}m ${seconds}s`;
+  return `${hours}𝐡 ${minutes}𝐦 ${seconds}𝐬`;
 }
