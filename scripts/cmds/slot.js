@@ -6,17 +6,17 @@ module.exports = {
     version: "1.3",
     author: "Saif",
     countDown: 10,
-    shortDescription: { en: "slot game 🙂" },
+    shortDescription: { en: "" },
     longDescription: { en: "" },
     category: "game"
   },
 
   langs: {
     en: {
-      invalid_amount: "• 𝐏𝐥𝐞𝐚𝐬𝐞 𝐄𝐧𝐭𝐞𝐫 𝐕𝐚𝐥𝐢𝐝 𝐀𝐦𝐨𝐮𝐧𝐭 😿💅",
-      not_enough_money: "• 𝐏𝐥𝐞𝐚𝐬𝐞 𝐂𝐡𝐞𝐜𝐤 𝐘𝐨𝐮𝐫 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 🤡",
-      too_much_bet: "• 𝐁𝐚𝐛𝐲, 𝐌𝐚𝐱 𝐁𝐞𝐭 𝐈𝐬 𝟑𝟎𝐌 😿",
-      cooldown: "• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐚𝐯𝐞 𝐑𝐞𝐚𝐜𝐡𝐞𝐝 𝟐𝟎 𝐏𝐥𝐚𝐲𝐬. 𝐓𝐫𝐲 𝐀𝐠𝐚𝐢𝐧 𝐀𝐟𝐭𝐞𝐫 %1 ⏳",
+      invalid_amount: "𝐏𝐥𝐞𝐚𝐬𝐞 𝐄𝐧𝐭𝐞𝐫 𝐕𝐚𝐥𝐢𝐝 𝐀𝐦𝐨𝐮𝐧𝐭 ",
+      not_enough_money: "𝐏𝐥𝐞𝐚𝐬𝐞 𝐂𝐡𝐞𝐜𝐤 𝐘𝐨𝐮𝐫 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 ",
+      too_much_bet: "🥲 | 𝐁𝐚𝐛𝐲, 𝐌𝐚𝐱 𝐁𝐞𝐭 𝐈𝐬 𝟑𝟎𝐌",
+      cooldown: "𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐚𝐯𝐞 𝐑𝐞𝐚𝐜𝐡𝐞𝐝 𝟐𝟎 𝐏𝐥𝐚𝐲𝐬. 𝐓𝐫𝐲 𝐀𝐠𝐚𝐢𝐧 𝐀𝐟𝐭𝐞𝐫 %1 ⏳",
     },
   },
 
@@ -113,7 +113,7 @@ function formatResult([a, b, c], winnings) {
 
   let resultText = "";
   if (a === b && b === c) {
-    resultText = `• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐢𝐭 𝐉𝐚𝐜𝐤𝐩𝐨𝐭 🎉\n• 𝐖𝐨𝐧: ${formattedWinnings}$`;
+    resultText = `• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐢𝐭 𝐉𝐚𝐜𝐤𝐩𝐨𝐭 🪽\n• 𝐖𝐨𝐧: ${formattedWinnings}$`;
   } else if (winnings > 0) {
     resultText = `• 𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐖𝐨𝐧 ${formattedWinnings}$`;
   } else {
