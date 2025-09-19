@@ -14,7 +14,7 @@ module.exports = {
   langs: {
     en: {
       invalid_amount: "𝐏𝐥𝐞𝐚𝐬𝐞 𝐄𝐧𝐭𝐞𝐫 𝐕𝐚𝐥𝐢𝐝 𝐀𝐦𝐨𝐮𝐧𝐭 ",
-      not_enough_money: "𝐏𝐥𝐞𝐚𝐬𝐞 𝐂𝐡𝐞𝐜𝐤 𝐘𝐨𝐮𝐫 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 ",
+      not_enough_money: "❌ | 𝐏𝐥𝐞𝐚𝐬𝐞 𝐂𝐡𝐞𝐜𝐤 𝐘𝐨𝐮𝐫 𝐁𝐚𝐥𝐚𝐧𝐜𝐞 ",
       too_much_bet: "🥲 | 𝐁𝐚𝐛𝐲, 𝐌𝐚𝐱 𝐁𝐞𝐭 𝐈𝐬 𝟑𝟎𝐌",
       cooldown: "𝐁𝐚𝐛𝐲, 𝐘𝐨𝐮 𝐇𝐚𝐯𝐞 𝐑𝐞𝐚𝐜𝐡𝐞𝐝 𝟐𝟎 𝐏𝐥𝐚𝐲𝐬. 𝐓𝐫𝐲 𝐀𝐠𝐚𝐢𝐧 𝐀𝐟𝐭𝐞𝐫 %1 ⏳",
     },
