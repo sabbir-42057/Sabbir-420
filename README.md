@@ -1,46 +1,61 @@
-<img
-src="https://i.ibb.co/RQ28H2p/banner.png" alt="banner">
+<img src="https://i.imgur.com/ST7083b.jpeg" alt="banner">
+<h1 align="center"><img src="./dashboard/images/logo-non-bg.png" width="22px"> Hey Welcome 😽</h1> 
 
-<h1 align="center">
-  <img src="https://i.imgur.com/ZfuZrPc.jpeg" width="22px" alt="icon">
-  Goat Bot - Bot Chat Messenger
-</h1>
+
+## Introduction
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-  𝗡𝗔𝗠𝗘      :𝗦𝗔𝗜𝗙 𝗔𝗵𝗺𝗲𝗱 ⁿⁱʳᵒᵇ 😭💋
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-   𝗥𝗘𝗟𝗜𝗚𝗜𝗢𝗡   : 𝗜𝗦𝗟𝗔𝗠
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-  𝗘𝗗𝗨𝗖𝗔𝗧𝗜𝗢𝗡 :- 𝗦𝗧𝗨𝗗𝗬
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-  𝗥𝗘𝗟𝗔𝗧𝗜𝗢𝗡𝗦𝗛𝗜𝗣 :- 𝗦𝗜𝗡𝗚𝗟𝗘 𝗨𝗟𝗧𝗥𝗔 𝗣𝗥𝗢 𝗠𝗔𝗫
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-  𝗙𝗔𝗖𝗘𝗕𝗢𝗢𝗞 :- (https://www.facebook.com/naruto.uzomaki09)
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+-  𝗜𝗡𝗦𝗧𝗔𝗚𝗥𝗔𝗠 :- [𝗟𝗢𝗔𝗗𝗜𝗡𝗚...]()
+
+
+<img align="center" alt="line" src="https://github.com/DalpatRathore/dalpatrathore/blob/main/assets/images/line-2.svg">
+
+
+
+#### Join us in [Messenger Group](https://m.me/j/AbZWperNBgLSuz3_/)✨
+##
+
+- If you encounter any issues or have questions related to this project, please don't hesitate to reach out to us on messenger. we're here to assist you!
 
 <p align="center">
-	<a href="https://nodejs.org/dist/v16.20.0">
-		<img src="https://img.shields.io/badge/Nodejs%20Support-16.x-brightgreen.svg?style=flat-square" alt="Nodejs Support v16.x">
-	</a>
-  <img alt="size" src="https://img.shields.io/github/repo-size/ntkhang03/Goat-Bot-V2.svg?style=flat-square&label=size">
-  <img alt="code-version" src="https://img.shields.io/badge/dynamic/json?color=brightgreen&label=code%20version&prefix=v&query=%24.version&url=https://github.com/ntkhang03/Goat-Bot-V2/raw/main/package.json&style=flat-square">
-  <img alt="visitors" src="https://visitor-badge.laobi.icu/badge?style=flat-square&page_id=ntkhang3.Goat-Bot-V2">
-  <img alt="size" src="https://img.shields.io/badge/license-MIT-green?style=flat-square&color=brightgreen">
-</p>
+		<img align="center" alt="PNG" src="https://i.imgur.com/IGVA7Tl.jpeg"/>
+<h1 align='center'>
+	
+- [🎀 **admin**](#-admin)
 
+<hr>
 
-
-The original author of this Bot is Ntkhang. This fork is maintained by: MahMUD  
-
-If you find any issues, please report them!
-
-
-𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: <a href="https://www.facebook.com/mahmud.x07" style="color: black;">Mah M UD</a></h3></div>
-
-<p align="center"><a href="fb link" target="_blank" rel="noopener noreferrer">
-  <img src="https://i.imgur.com/M6xV2Np.jpeg" width="100" style="margin-right: 10px;"></a>
-</p>
-<h5 align="center">
->🎀 Mah MUD
-</h5>
-
- 
-
-<div align="center">
-			<h3>Gmail:
-			<a href="mahmudx077@gmail.com" style="color: green;">MahMUDx7 </a>
-				<br>
-	𝐅𝐚𝐜𝐞𝐛𝐨𝐨𝐤: <a href="https://www.facebook.com/mahmud.x07" style="color: black;">MahMUD</a></h3></div>
-
-<img align="center" src="https://i.imgur.com/UM3ekFf.jpeg"/>
-
-
-🔹Ariyan Mahmud
+- Fix goat bot fork V2!
+- messenger : https://m.me/imsaif4004
