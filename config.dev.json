@@ -17,21 +17,18 @@
     "ignoreCommand": []
   },
   "adminBot": [
-    "61579613335244",
-    "61579237688880",
-    "100071429830541",
-    "100014097943658"
+    "100037951718438"
   ],
   "whiteListMode": {
     "enable": false,
     "whiteListIds": [],
     "notes": "if you enable this feature, only the ids in the whiteListIds section can use the bot"
   },
-  "nickNameBot": "𝗠𝗲𝗹𝗶𝘀𝘀𝗮 𓍯",
-  "prefix": "!",
+  "nickNameBot": "Hinata",
+  "prefix": ".",
   "database": {
-    "type": "mongodb",
-    "uriMongodb": "mongodb+srv://mdnirob11229:VyOD8j3UM9hRkzcl@cluster0.fsk0b.mongodb.net/SAIF-BOLOD?retryWrites=true&w=majority&appName=Cluster0",
+    "type": "sqlite",
+    "uriMongodb": "",
     "autoSyncWhenStart": false,
     "autoRefreshThreadInfoFirstTime": true,
     "notes": "(1) type selects 'json' or 'sqlite' or 'mongodb'. If you choose mongodb, enter uri connect mongodb in the uriMongodb section, instructions to get uri connect mongodb at: https://youtu.be/z1f9urHW5xY. I recommend using 'mongodb' or 'sqlite', json is not recommended because it is not stable. (2) when you set autoSyncWhenStart to true, the bot will automatically synchronize the data in the database when starting the bot, this will make the bot start slower. (3) when you set autoRefreshThreadInfoFirstTime to true, the bot will automatically refresh the thread information when get first message from the thread since starting the bot"
@@ -65,7 +62,7 @@
     }
   },
   "autoRestart": {
-    "time": 86400000,
+    "time": 3600000,
     "notes": "you can set time is interval with milisecond or cron time, example: 1000, 10000, 60000, 3600000, 86400000, 0 0 * * *,... docs: https://www.npmjs.com/package/node-cron. If you set time is 0 or false or null, the bot will not auto restart"
   },
   "autoUptime": {
@@ -135,7 +132,7 @@
     "updatePresence": true,
     "listenTyping": true,
     "logLevel": "error",
-    "selfListen": false,
+    "selfListen": true,
     "selfListenEvent": true,
     "autoMarkDelivery": true,
     "autoReconnect": true,
