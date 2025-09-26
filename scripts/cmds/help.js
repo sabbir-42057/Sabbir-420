@@ -57,7 +57,7 @@ module.exports = {
       const totalCommands = commands.size;
       msg += `\n\n⭔Bot has ${totalCommands} commands\n⭔Type ${prefix}𝐡𝐞𝐥𝐩 <𝚌𝚘𝚖𝚖𝚊𝚗𝚍 𝚗𝚊𝚖𝚎> to learn Usage.\n`;
       msg += ``;
-      msg += `\n╭─✦ADMIN: AkaZ'a\n├‣ FACEBOOK\n╰‣:m.me/akaza9x`; // customize this section if needed
+      msg += `\n╭─✦ADMIN: EDEN\n├‣ MESSENGER\n╰‣:m.me/ibonex.eden`; // customize this section if needed
 
       try {
         const hh = await message.reply({ body: msg });
