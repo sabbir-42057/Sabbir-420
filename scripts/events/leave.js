@@ -1,98 +1,98 @@
 const { getTime, drive } = global.utils;
 
 module.exports = {
-        config: {
-                name: "leave",
-                version: "1.8",
-                author: "NTKhang & Modified by ♡︎ 𝐻𝐴𝑆𝐴𝑁 ♡︎",
-                category: "events"
-        },
+	config: {
+		name: "leave",
+		version: "1.4",
+		author: "NTKhang",
+		category: "events"
+	},
 
-        onStart: async ({ threadsData, message, event, api, usersData }) => {
-                if (event.logMessageType !== "log:unsubscribe") return;
+	langs: {
+		vi: {
+			session1: "sáng",
+			session2: "trưa",
+			session3: "chiều",
+			session4: "tối",
+			leaveType1: "tự rời",
+			leaveType2: "bị kick",
+			defaultLeaveMessage: "{userName} đã {type} khỏi nhóm"
+		},
+		en: {
+			session1: "morning",
+			session2: "noon",
+			session3: "afternoon",
+			session4: "evening",
+			leaveType1: "left",
+			leaveType2: "was kicked from",
+			defaultLeaveMessage: "{userName} {type} the group"
+		}
+	},
 
-                const { threadID } = event;
-                const threadData = await threadsData.get(threadID);
-                if (!threadData.settings.sendLeaveMessage) return;
+	onStart: async ({ threadsData, message, event, api, usersData, getLang }) => {
+		if (event.logMessageType == "log:unsubscribe")
+			return async function () {
+				const { threadID } = event;
+				const threadData = await threadsData.get(threadID);
+				if (!threadData.settings.sendLeaveMessage)
+					return;
+				const { leftParticipantFbId } = event.logMessageData;
+				if (leftParticipantFbId == api.getCurrentUserID())
+					return;
+				const hours = getTime("HH");
 
-                const { leftParticipantFbId } = event.logMessageData;
-                if (leftParticipantFbId == api.getCurrentUserID()) return;
+				const threadName = threadData.threadName;
+				const userName = await usersData.getName(leftParticipantFbId);
 
-                const hours = parseInt(getTime("HH"));
-                const userName = await usersData.getName(leftParticipantFbId);
+				// {userName}   : name of the user who left the group
+				// {type}       : type of the message (leave)
+				// {boxName}    : name of the box
+				// {threadName} : name of the box
+				// {time}       : time
+				// {session}    : session
 
+				let { leaveMessage = getLang("defaultLeaveMessage") } = threadData.data;
+				const form = {
+					mentions: leaveMessage.match(/\{userNameTag\}/g) ? [{
+						tag: userName,
+						id: leftParticipantFbId
+					}] : null
+				};
 
-                const session =
-                        hours < 10 ? "𝑀𝑜𝑟𝑛𝑖𝑛𝑔" :
-                        hours < 13 ? "𝐴𝑓𝑡𝑒𝑟𝑛𝑜𝑜𝑛" :
-                        hours < 18 ? "𝐸𝑣𝑒𝑛𝑖𝑛𝑔" :
-                        "𝑁𝑖𝑔ℎ𝑡";
+				leaveMessage = leaveMessage
+					.replace(/\{userName\}|\{userNameTag\}/g, userName)
+					.replace(/\{type\}/g, leftParticipantFbId == event.author ? getLang("leaveType1") : getLang("leaveType2"))
+					.replace(/\{threadName\}|\{boxName\}/g, threadName)
+					.replace(/\{time\}/g, hours)
+					.replace(/\{session\}/g, hours <= 10 ?
+						getLang("session1") :
+						hours <= 12 ?
+							getLang("session2") :
+							hours <= 18 ?
+								getLang("session3") :
+								getLang("session4")
+					);
 
+				form.body = leaveMessage;
 
-                const leaveMessages = [
-                                "🛫 ${userName} উড়ে গেলো অন্য কোনো গ্রহে!",
-                                "🤭 ${userName} সত্যি বলতে তুই বোকাচোদা ছিলি!",
-					            " ${userName} nigga left the group"
-                ];
+				if (leaveMessage.includes("{userNameTag}")) {
+					form.mentions = [{
+						id: leftParticipantFbId,
+						tag: userName
+					}];
+				}
 
-                const kickMessages = [
-                                "🚨 ${userName} কে বাহির করে শান্তি ফিরানো হলো! ✌️",
-                                "🥾 ${userName} কে ফাইনালি লাথি মারা হলো গ্রুপ থেকে!",
-                                "🧹 পরিষ্কার অভিযান সফল: ${userName} বিদায় নিলো!",
-                                "🥵 ${userName} ভাইয়া, এই গ্রুপ আপনার লেভেলের না! বাহিরে যাইতে হইছে!"
-                ];
-
-                const isKick = leftParticipantFbId !== event.author;
-                const messages = isKick ? kickMessages : leaveMessages;
-                const selected = messages[Math.floor(Math.random() * messages.length)];
-
-                const body = eval('`' + selected + '`');
-
-                const form = {
-                        body,
-                        mentions: [{
-                                id: leftParticipantFbId,
-                                tag: userName
-                        }]
-                };
-
-                if (threadData.data.leaveAttachment) {
-                        const files = threadData.data.leaveAttachment;
-                        const attachments = files.map(file => drive.getFile(file, "stream"));
-                        con",
-					            " ${userName} nigga left the group"
-                ];
-
-                const kickMessages = [
-                                "🚨 ${userName} কে বাহির করে শান্তি ফিরানো হলো! ✌️",
-                                "🥾 ${userName} কে ফাইনালি লাথি মারা হলো গ্রুপ থেকে!",
-                                "🧹 পরিষ্কার অভিযান সফল: ${userName} বিদায় নিলো!",
-                                "🥵 ${userName} ভাইয়া, এই গ্রুপ আপনার লেভেলের না! বাহিরে যাইতে হইছে!"
-                ];
-
-                const isKick = leftParticipantFbId !== event.author;
-                const messages = isKick ? kickMessages : leaveMessages;
-                const selected = messages[Math.floor(Math.random() * messages.length)];
-
-                const body = eval('`' + selected + '`');
-
-                const form = {
-                        body,
-                        mentions: [{
-                                id: leftParticipantFbId,
-                                tag: userName
-                        }]
-                };
-
-                if (threadData.data.leaveAttachment) {
-                        const files = threadData.data.leaveAttachment;
-                        const attachments = files.map(file => drive.getFile(file, "stream"));
-                        const results = await Promise.allSettled(attachments);
-                        form.attachment = results
-                                .filter(r => r.status === "fulfilled")
-                                .map(r => r.value);
-                }
-
-                message.send(form);
-        }
+				if (threadData.data.leaveAttachment) {
+					const files = threadData.data.leaveAttachment;
+					const attachments = files.reduce((acc, file) => {
+						acc.push(drive.getFile(file, "stream"));
+						return acc;
+					}, []);
+					form.attachment = (await Promise.allSettled(attachments))
+						.filter(({ status }) => status == "fulfilled")
+						.map(({ value }) => value);
+				}
+				message.send(form);
+			};
+	}
 };
