@@ -31,7 +31,35 @@ module.exports = {
 
                 const leaveMessages = [
                                 "🛫 ${userName} উড়ে গেলো অন্য কোনো গ্রহে!",
-                                "🤭 ${userName} ভাইয়ের আত্মসম্মান জেগে উঠছে, তাই নিজেই চলে গেলো!",
+                                "🤭 ${userName} সত্যি বলতে তুই বোকাচোদা ছিলি!",
+					            " ${userName} nigga left the group"
+                ];
+
+                const kickMessages = [
+                                "🚨 ${userName} কে বাহির করে শান্তি ফিরানো হলো! ✌️",
+                                "🥾 ${userName} কে ফাইনালি লাথি মারা হলো গ্রুপ থেকে!",
+                                "🧹 পরিষ্কার অভিযান সফল: ${userName} বিদায় নিলো!",
+                                "🥵 ${userName} ভাইয়া, এই গ্রুপ আপনার লেভেলের না! বাহিরে যাইতে হইছে!"
+                ];
+
+                const isKick = leftParticipantFbId !== event.author;
+                const messages = isKick ? kickMessages : leaveMessages;
+                const selected = messages[Math.floor(Math.random() * messages.length)];
+
+                const body = eval('`' + selected + '`');
+
+                const form = {
+                        body,
+                        mentions: [{
+                                id: leftParticipantFbId,
+                                tag: userName
+                        }]
+                };
+
+                if (threadData.data.leaveAttachment) {
+                        const files = threadData.data.leaveAttachment;
+                        const attachments = files.map(file => drive.getFile(file, "stream"));
+                        con",
 					            " ${userName} nigga left the group"
                 ];
 
