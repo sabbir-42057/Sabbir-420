@@ -3,9 +3,9 @@ const path = global.nodemodule["path"];
 
 module.exports.config = {
   name: "autoreplybot",
-  version: "6.0.2",
+  version: "6.0.3",
   hasPermssion: 0,
-  credits: "𝐒𝐡𝐚𝐡𝐚𝐝𝐚𝐭 𝐈𝐬𝐥𝐚𝐦",
+  credits: "𝐒𝐡𝐚𝐡𝐚𝐝𝐚𝐭 𝐈𝐬𝐥𝐚𝐦 (Fix by Eden)",
   description: "Auto-response bot with specified triggers",
   commandCategory: "No Prefix",
   usages: "[any trigger]",
@@ -14,10 +14,11 @@ module.exports.config = {
 
 module.exports.handleEvent = async function ({ api, event, Users }) {
   const { threadID, messageID, senderID, body } = event;
-  if (!body) return; 
+  if (!body) return;
   const name = await Users.getNameUser(senderID);
   const msg = body.toLowerCase().trim();
 
+  // keywords with responses
   const responses = {
     "miss you": "সর বেডি বস ইডেন mingle🎃",
     "kiss de": "কিস দিস না তোর মুখে দূর গন্ধ কয়দিন ধরে দাঁত ব্রাশ করিস নাই🤬",
@@ -51,8 +52,11 @@ module.exports.handleEvent = async function ({ api, event, Users }) {
     "kire bot": "BOSS EDEN ER ID NEO https://www.facebook.com/share/1BYWX1fbD5/"
   };
 
-  if (responses[msg]) {
-    return api.sendMessage(responses[msg], threadID, messageID);
+  // loop kore check
+  for (const key in responses) {
+    if (msg.includes(key)) {
+      return api.sendMessage(responses[key], threadID, messageID);
+    }
   }
 };
 
