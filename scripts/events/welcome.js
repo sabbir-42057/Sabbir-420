@@ -1,128 +1,158 @@
-const { getTime, drive } = global.utils;
-if (!global.temp.welcomeEvent)
-	global.temp.welcomeEvent = {};
+module.exports.config = {
+  name: "joinnoti",
+  eventType: ["log:subscribe"],
+  version: "1.0.3",
+  credits: "MUNTASIR MAHMUD",
+  description: "Welcome message with optional image/video",
+  dependencies: {
+    "fs-extra": "",
+    "path": ""
+  }
+};
 
-module.exports = {
-	config: {
-		name: "welcome",
-		version: "1.8",
-		author: "NTKhang ",
-		category: "events"
-	},
+module.exports.onLoad = function () {
+  const { existsSync, mkdirSync } = global.nodemodule["fs-extra"];
+  const { join } = global.nodemodule["path"];
+  const paths = [
+    join(__dirname, "cache", "joinGif"),
+    join(__dirname, "cache", "randomgif")
+  ];
+  for (const path of paths) {
+    if (!existsSync(path)) mkdirSync(path, { recursive: true });
+  }
+};
 
-	langs: {
-		vi: {
-			session1: "sáng",
-			session2: "trưa",
-			session3: "chiều",
-			session4: "tối",
-			welcomeMessage: "Cảm ơn bạn đã mời tôi vào nhóm!\nPrefix bot: %1\nĐể xem danh sách lệnh hãy nhập: %1help",
-			multiple1: "bạn",
-			multiple2: "các bạn",
-			defaultWelcomeMessage: "✨🌸 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 🌸✨\n\n┏━━━━━━━━━━━━━┓\n   💫 𝐇𝐞𝐲 {userName} 💫\n┗━━━━━━━━━━━━━┛\n\n🌷 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 {multiple} 𝐭𝐨 {boxName} ✨\n𝐇𝐚𝐯𝐞 𝐚 𝐧𝐢𝐜𝐞 {session} 💕"
-		},
-		en: {
-			session1: "morning",
-			session2: "noon",
-			session3: "afternoon",
-			session4: "evening",
-			welcomeMessage: "Thank you for inviting me to the group!\nBot prefix: %1\nTo view the list of commands, please enter: %1help",
-			multiple1: "you",
-			multiple2: "you guys",
-			defaultWelcomeMessage: "✨🌸 𝗪𝗲𝗹𝗰𝗼𝗺𝗲 🌸✨\n\n┏━━━━━━━━━━━━━┓\n   💫 𝐇𝐞𝐲 {userName} 💫\n┗━━━━━━━━━━━━━┛\n\n🌷 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 {multiple} 𝐭𝐨 {boxName} ✨\n𝐇𝐚𝐯𝐞 𝐚 𝐧𝐢𝐜𝐞 {session} 💕"
-		}
-	},
+module.exports.run = async function({ api, event }) {
+  const fs = require("fs");
+  const path = require("path");
+  const { threadID } = event;
 
-	onStart: async ({ threadsData, message, event, api, getLang }) => {
-		if (event.logMessageType == "log:subscribe")
-			return async function () {
-				const hours = getTime("HH");
-				const { threadID } = event;
-				const { nickNameBot } = global.GoatBot.config;
-				const prefix = global.utils.getPrefix(threadID);
-				const dataAddedParticipants = event.logMessageData.addedParticipants;
-				
-				// if new member is bot
-				if (dataAddedParticipants.some((item) => item.userFbId == api.getCurrentUserID())) {
-					if (nickNameBot)
-						api.changeNickname(nickNameBot, threadID, api.getCurrentUserID());
-					return message.send(getLang("welcomeMessage", prefix));
-				}
+  const botPrefix = global.config.PREFIX || "/";
+  const botName = global.config.BOTNAME || "YOUR মুরগীর বাচ্চা 😘";
 
-				// if new member:
-				if (!global.temp.welcomeEvent[threadID])
-					global.temp.welcomeEvent[threadID] = {
-						joinTimeout: null,
-						dataAddedParticipants: []
-					};
+  // Bot nijeke add hole nickname change ar welcome message
+  if (event.logMessageData.addedParticipants.some(i => i.userFbId == api.getCurrentUserID() || i.id == api.getCurrentUserID())) {
+    await api.changeNickname(`[ ${botPrefix} ] • ${botName}`, threadID, api.getCurrentUserID());
 
-				// push new member to array
-				global.temp.welcomeEvent[threadID].dataAddedParticipants.push(...dataAddedParticipants);
-				clearTimeout(global.temp.welcomeEvent[threadID].joinTimeout);
+    api.sendMessage("চ্ঁলে্ঁ এ্ঁসে্ঁছি্ঁ YOUR মুরগীর বাচ্চা 😘 এঁখঁনঁ তোঁমাঁদেঁরঁ সাঁথেঁ আঁড্ডাঁ দিঁবঁ..!", threadID, () => {
+      const randomGifPath = path.join(__dirname, "cache", "randomgif");
+      const allFiles = fs.readdirSync(randomGifPath).filter(file =>
+        [".mp4", ".jpg", ".png", ".jpeg", ".gif", ".mp3"].some(ext => file.endsWith(ext))
+      );
 
-				// set new timeout
-				global.temp.welcomeEvent[threadID].joinTimeout = setTimeout(async function () {
-					const threadData = await threadsData.get(threadID);
-					if (threadData.settings.sendWelcomeMessage == false)
-						return;
+      const selected = allFiles.length > 0 
+        ? fs.createReadStream(path.join(randomGifPath, allFiles[Math.floor(Math.random() * allFiles.length)])) 
+        : null;
 
-					const dataAddedParticipants = global.temp.welcomeEvent[threadID].dataAddedParticipants;
-					const dataBanned = threadData.data.banned_ban || [];
-					const threadName = threadData.threadName;
-					const userName = [],
-						mentions = [];
-					let multiple = false;
+      const messageBody = `╭•┄┅═══❁🌺❁═══┅┄•╮
+আ্ঁস্ঁসা্ঁলা্ঁমু্ঁ💚আ্ঁলা্ঁই্ঁকু্ঁম্ঁ
+╰•┄┅═══❁🌺❁═══┅┄•╯
 
-					if (dataAddedParticipants.length > 1) multiple = true;
+𝐓𝐡𝐚𝐧𝐤 𝐲𝐨𝐮 𝐬𝐨 𝐦𝐮𝐜𝐡 𝐟𝐨𝐫 𝐚𝐝𝐝𝐢𝐧𝐠 𝐦𝐞 𝐭𝐨 𝐲𝐨𝐮𝐫 𝐢-𝐠𝐫𝐨𝐮𝐩-🖤🤗
+𝐈 𝐰𝐢𝐥𝐥 𝐚𝐥𝐰𝐚𝐲𝐬 𝐬𝐞𝐫𝐯𝐞 𝐲𝐨𝐮 𝐢𝐧𝐚𝐡𝐚𝐥𝐥𝐚𝐡 🌺❤️
 
-					for (const user of dataAddedParticipants) {
-						if (dataBanned.some((item) => item.id == user.userFbId))
-							continue;
-						userName.push(user.fullName);
-						mentions.push({ tag: user.fullName, id: user.userFbId });
-					}
+𝐓𝐨 𝐯𝐢𝐞𝐰 𝐚𝐧𝐲 𝐜𝐨𝐦𝐦𝐚𝐧𝐝:
+${botPrefix}Help
+${botPrefix}Info
+${botPrefix}Admin
 
-					if (userName.length == 0) return;
-					let { welcomeMessage = getLang("defaultWelcomeMessage") } = threadData.data;
+★ যেকোনো অভিযোগ অথবা হেল্প এর জন্য এডমিন 𝐄𝐝𝐞𝐧 愛 কে নক করতে পারেন ★
+➤𝐌𝐞𝐬𝐬𝐞𝐧𝐠𝐞𝐫: https://m.me/ibonex.eden
 
-					const form = {
-						mentions: welcomeMessage.match(/\{userNameTag\}/g) ? mentions : null
-					};
+❖⋆═══════════════════════⋆❖
+          𝐁𝐨𝐭 𝐎𝐰𝐧𝐞𝐫 ➢ 𝐄𝐝𝐞𝐧 愛`;
 
-					welcomeMessage = welcomeMessage
-						.replace(/\{userName\}|\{userNameTag\}/g, userName.join(", "))
-						.replace(/\{boxName\}|\{threadName\}/g, threadName)
-						.replace(
-							/\{multiple\}/g,
-							multiple ? getLang("multiple2") : getLang("multiple1")
-						)
-						.replace(
-							/\{session\}/g,
-							hours <= 10
-								? getLang("session1")
-								: hours <= 12
-									? getLang("session2")
-									: hours <= 18
-										? getLang("session3")
-										: getLang("session4")
-						);
+      if (selected) {
+        api.sendMessage({ body: messageBody, attachment: selected }, threadID);
+      } else {
+        api.sendMessage(messageBody, threadID);
+      }
+    });
 
-					form.body = welcomeMessage;
+    return;
+  }
 
-					if (threadData.data.welcomeAttachment) {
-						const files = threadData.data.welcomeAttachment;
-						const attachments = files.reduce((acc, file) => {
-							acc.push(drive.getFile(file, "stream"));
-							return acc;
-						}, []);
-						form.attachment = (await Promise.allSettled(attachments))
-							.filter(({ status }) => status == "fulfilled")
-							.map(({ value }) => value);
-					}
+  // Not bot add hole, normal welcome message
+  try {
+    const { createReadStream, readdirSync } = global.nodemodule["fs-extra"];
+    let { threadName, participantIDs } = await api.getThreadInfo(threadID);
+    const threadData = global.data.threadData.get(parseInt(threadID)) || {};
+    let mentions = [], nameArray = [], memNumber = participantIDs.length;
 
-					message.send(form);
-					delete global.temp.welcomeEvent[threadID];
-				}, 1500);
-			};
-	}
+    for (let i = 0; i < event.logMessageData.addedParticipants.length; i++) {
+      const user = event.logMessageData.addedParticipants[i];
+      nameArray.push(user.fullName);
+      mentions.push({ tag: user.fullName, id: user.userFbId || user.id });
+    }
+
+    let msg = (typeof threadData.customJoin === "undefined") ? `╭•┄┅═══❁🌺❁═══┅┄•╮
+আ্ঁস্ঁসা্ঁলা্ঁমু্ঁ💚আ্ঁলা্ঁই্ঁকু্ঁম্ঁ
+╰•┄┅═══❁🌺❁═══┅┄•╯
+হাসি, মজা, ঠাট্টায় গড়ে উঠুক  
+চিরস্থায়ী বন্ধুত্বের বন্ধন।🥰
+ভালোবাসা ও সম্পর্ক থাকুক আজীবন।💝
+
+➤ আশা করি আপনি এখানে হাসি-মজা করে 
+আড্ডা দিতে ভালোবাসবেন।😍
+➤ সবার সাথে মিলেমিশে থাকবেন।😉
+➤ উস্কানিমূলক কথা বা খারাপ ব্যবহার করবেন না।🚫
+➤ গ্রুপ এডমিনের কথা শুনবেন ও রুলস মেনে চলবেন।✅
+
+›› প্রিয় {name},  
+আপনি এই গ্রুপের {soThanhVien} নম্বর মেম্বার!
+
+›› গ্রুপ: {threadName}
+
+💌 🌺 𝐖 𝐄 𝐋 𝐂 𝐎 𝐌 𝐄 🌺 💌
+╭─╼╾─╼🌸╾─╼╾───╮
+FROM YOUR মুরগীর বাচ্চা 😘 🌺
+╰───╼╾─╼🌸╾─╼╾─╯
+
+❖⋆══════════════════════════⋆❖` : threadData.customJoin;
+
+    msg = msg
+      .replace(/\{name}/g, nameArray.join(', '))
+      .replace(/\{soThanhVien}/g, memNumber)
+      .replace(/\{threadName}/g, threadName);
+
+    const joinGifPath = path.join(__dirname, "cache", "joinGif");
+    const files = readdirSync(joinGifPath).filter(file =>
+      [".mp4", ".jpg", ".png", ".jpeg", ".gif", ".mp3"].some(ext => file.endsWith(ext))
+    );
+    const randomFile = files.length > 0 
+      ? createReadStream(path.join(joinGifPath, files[Math.floor(Math.random() * files.length)])) 
+      : null;
+
+    return api.sendMessage(
+      randomFile ? { body: msg, attachment: randomFile, mentions } : { body: msg, mentions },
+      threadID
+    );
+  } catch (e) {
+    console.error("JoinNoti Error:", e);
+  }
+}; YOUR মুরগীর বাচ্চা 😘 🌺
+╰───╼╾─╼🌸╾─╼╾─╯
+
+❖⋆══════════════════════════⋆❖` : threadData.customJoin;
+
+    msg = msg
+      .replace(/\{name}/g, nameArray.join(', '))
+      .replace(/\{soThanhVien}/g, memNumber)
+      .replace(/\{threadName}/g, threadName);
+
+    const joinGifPath = path.join(__dirname, "cache", "joinGif");
+    const files = readdirSync(joinGifPath).filter(file =>
+      [".mp4", ".jpg", ".png", ".jpeg", ".gif", ".mp3"].some(ext => file.endsWith(ext))
+    );
+    const randomFile = files.length > 0 
+      ? createReadStream(path.join(joinGifPath, files[Math.floor(Math.random() * files.length)])) 
+      : null;
+
+    return api.sendMessage(
+      randomFile ? { body: msg, attachment: randomFile, mentions } : { body: msg, mentions },
+      threadID
+    );
+  } catch (e) {
+    console.error("JoinNoti Error:", e);
+  }
 };
