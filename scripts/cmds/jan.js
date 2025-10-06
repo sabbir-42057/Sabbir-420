@@ -1,6 +1,5 @@
 const axios = require("axios");
 
-// 🔹 যেসব শব্দে বট রেসপন্ড করবে
 const mahmuds = [
   "baby", "babu", "bby", "jan", "bot",
   "জান", "বেবি", "hinata", "miakhalifa", "kutta"
@@ -13,12 +12,11 @@ async function baseApiUrl() {
     return res.data?.jan || "";
   } catch (err) {
     console.error("Base URL Load Error:", err.message);
-    // fallback URL
-    return "https://mahmudapis.vercel.app";
+    return "";
   }
 }
 
-// 🔹 Responses লিস্ট (তুমি যেটা দিয়েছিলে — পুরোটা রাখা হয়েছে)
+// 🔹 Responses লিস্ট (একই রাখা হয়েছে)
 const responses = [
   "babu khuda lagse🥺",
   "Hop beda😾,Boss বল boss😼",  
@@ -129,8 +127,8 @@ async function getBotResponse(message) {
 module.exports = {
   config: {
     name: "bot",
-    version: "3.0",
-    author: "Eden",
+    version: "2.0",
+    author: "EDEN",
     role: 0,
     category: "ai",
     guide: { en: "Just type jan or baby 😋" }
@@ -140,9 +138,10 @@ module.exports = {
 
   onChat: async function ({ api, event }) {
     try {
-      const message = (event.body || "").toLowerCase();
+      const message = event.body?.toLowerCase() || "";
       if (!message) return;
 
+      // startsWith → includes (আরও flexible)
       if (!mahmuds.some(word => message.includes(word))) return;
 
       api.setMessageReaction("👀", event.messageID, () => {}, true);
@@ -153,14 +152,32 @@ module.exports = {
       // একটাই শব্দ হলে random reply
       if (wordCount === 1) {
         const randomMsg = responses[Math.floor(Math.random() * responses.length)];
-        return api.sendMessage(`${randomMsg}\n\n✨ Made by Eden`, event.threadID, event.messageID);
+        return api.sendMessage(randomMsg, event.threadID, (err, info) => {
+          if (!err) {
+            global.GoatBot.onReply.set(info.messageID, {
+              commandName: "bot",
+              type: "reply",
+              messageID: info.messageID,
+              author: event.senderID
+            });
+          }
+        }, event.messageID);
       }
 
       // শব্দের পর কিছু থাকলে API call
       const userText = words.slice(1).join(" ");
       const botResponse = await getBotResponse(userText);
 
-      api.sendMessage(`${botResponse}\n\n👤 Author: Eden`, event.threadID, event.messageID);
+      api.sendMessage(botResponse, event.threadID, (err, info) => {
+        if (!err) {
+          global.GoatBot.onReply.set(info.messageID, {
+            commandName: "bot",
+            type: "reply",
+            messageID: info.messageID,
+            author: event.senderID
+          });
+        }
+      }, event.messageID);
 
     } catch (err) {
       console.error("Chat Error:", err.message);
