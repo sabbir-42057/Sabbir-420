@@ -1,14 +1,11 @@
 const { getTime, getStreamFromURL } = global.utils;
-const fs = require("fs-extra");
-const path = require("path");
 
 if (!global.temp.welcomeEvent) global.temp.welcomeEvent = {};
 
-// Default welcome image
 const WELCOME_IMAGE = "https://i.imgur.com/vkOxD7T8.jpeg";
 
 module.exports = {
-  config: { name: "welcome", version: "2.3", author: "Eden & GPT-5", category: "events" },
+  config: { name: "welcome", version: "2.4", author: "Eden GPT", category: "events" },
 
   langs: {
     en: {
@@ -29,7 +26,7 @@ module.exports = {
     const { threadID } = event;
     const dataAddedParticipants = event.logMessageData.addedParticipants;
 
-    // Bot join
+    // BOT join
     if (dataAddedParticipants.some(p => p.userFbId == api.getCurrentUserID()))
       return message.send(getLang("botJoin", global.utils.getPrefix(threadID)));
 
@@ -63,21 +60,20 @@ module.exports = {
         .replace(/\{boxName\}/g, threadName)
         .replace(/\{session\}/g, session);
 
-      const form = {
-        body: welcomeMessage,
-        mentions
-      };
+      const form = { body: welcomeMessage, mentions };
 
-      // ✅ Use getStreamFromURL for reliable attachment
       try {
-        const stream = await getStreamFromURL(WELCOME_IMAGE);
+        // Stream from URL with proper extension
+        const stream = await getStreamFromURL(WELCOME_IMAGE, "jpeg");
         form.attachment = [stream];
+
+        await message.send(form);
       } catch (err) {
-        console.error("❌ Failed to fetch welcome image:", err);
+        console.error("❌ Failed to send welcome image:", err);
+        await message.send(form); // fallback text only
       }
 
-      await message.send(form);
       delete global.temp.welcomeEvent[threadID];
-    }, 1500);
+    }, 1000); // 1 second timeout
   }
 };
