@@ -34,7 +34,7 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 
  const msg = `╭⭓ ⪩ 𝐁𝐎𝐓𝐓 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 ⪨
 │
-├─ 🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : 𝐘𝐎𝐔𝐑 মুরগীর বাচ্চা 😘
+├─ 🤖 𝗕𝗼𝘁 𝗡𝗮𝗺𝗲 : ❥YOUR BBY⸝⸝⸝♡
 ├─ ☢️ 𝗣𝗿𝗲𝗳𝗶𝘅 : ${config.PREFIX}
 ├─ ♻️ 𝗣𝗿𝗲𝗳𝗶𝘅 𝗕𝗼𝘅 : ${prefix}
 ├─ 🔶 𝗠𝗼𝗱𝘂𝗹𝗲𝘀 : ${commands.size}
@@ -44,11 +44,11 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 
 ╭⭓ ⪩ 𝗢𝗪𝗡𝗘𝗥 𝗜𝗡𝗙𝗢 ⪨
 │
-├─ 👑 𝗡𝗮𝗺𝗲 : 𝐌𝐔𝐍𝐓𝐀𝐒𝐈𝐑 𝐌𝐀𝐇𝐌𝐔𝐃
+├─ 👑 𝗡𝗮𝗺𝗲 : SABBIR AHMED
 ├─ 📲 𝗙𝗮𝗰𝗲𝗯𝗼𝗼𝗸 :
-│https://www.facebook.com/share/1Ytqik8pZP/
+│NAI RE VAI
 ├─ 💌 𝗠𝗲𝘀𝘀𝗲𝗻𝗴𝗲𝗿 :
-│ https://m.me/ibonex.eden
+│ NOPE😑
 ├─ 📞 𝗪𝗵𝗮𝘁𝘀𝗔𝗽𝗽 :
 │ তরে দিমু ক্যা?😑
 │
@@ -62,10 +62,10 @@ module.exports.run = async function ({ api, event, args, Users, Threads }) {
 ╰───────⭓
 
 ❤️ 𝗧𝗵𝗮𝗻𝗸𝘀 𝗳𝗼𝗿 𝘂𝘀𝗶𝗻𝗴 🌺
- 😍YOUR ADMIN EDEN 愛`;
+ 😍YOUR ADMIN SABBIR 愛`;
 
  const imgLink = [
- "https://i.imgur.com/nI4laT8.jpeg"
+ ""
  ];
 
  const imgLink = imgLinks[Math.floor(Math.random() * imgLinks.length)];
